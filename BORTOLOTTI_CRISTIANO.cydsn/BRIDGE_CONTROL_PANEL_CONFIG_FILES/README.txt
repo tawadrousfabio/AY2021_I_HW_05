@@ -1,0 +1,1 @@
+In this folder you can upload .ini and .iic configuration files for Bridge Control Panel
