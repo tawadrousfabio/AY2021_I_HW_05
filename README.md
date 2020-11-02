@@ -13,11 +13,11 @@ In this assignment you are required to create a project using PSoC Creator and t
 LTEBS srl is testing I2C bus protocol on reasonable priced breakout boards, the company wants to verify the expected behaviour of a LIS3DH breakout at different frequencies. Your ability to correctly interpret a component datasheet will be required!
 
 - At startup, the microcontroller will check an internal EEPROM "startup" register to select a sampling frequency for the LIS3DH Accelerometer.
-- Correctly set the control registers to output 3-axis signals in High Resolution Mode at the selected frequency (previously read).
-- The user can cycle through known sampling frequencies (1÷200Hz) via the press of the microcontroller push button. Consequently, both the LIS3DH and the internal "startup"(EEPROM) registers must be set appropriately to match the required value.
+- Correctly set the control registers to output 3-axis signals in **High Resolution Mode** at the selected frequency (previously read).
+- The user can cycle through known sampling frequencies **(1÷200Hz)** via the press of the microcontroller push button. Consequently, both the LIS3DH and the internal "startup"(EEPROM) registers must be set appropriately to match the required value.
 - Data must be read from the 3-axis registers at a sufficient rate. Every read must provide unique data (i.e. checking the status register).
-- Every axis acceleration must be properly read and converted to m/s^2 values.
-- Data must be accurately plot from the Bridge Control Panel (keeping at least 3 digits). It is required to provide the Bridge Control Panel .ini and .iic file for interfacing with the firmware (NB: all 3-axial signals must be plotted)
+- Every axis acceleration must be properly read and converted to **m/s^2** values.
+- Data must be accurately plot from the Bridge Control Panel (keeping **at least 3 digits**). It is required to provide the Bridge Control Panel .ini and .iic file for interfacing with the firmware (NB: all 3-axial signals must be plotted)
 
 ### Connections
 The I2C Protocol requires pins **12.0** and **12.1**.
@@ -52,6 +52,7 @@ The evaluation of the assignment will take into consideration the following aspe
 
 
 ### Additional Resources:
+- [PSoC I2C Master Component Datasheet](https://www.cypress.com/file/175671/download)
 - [PSoC PWM Component Datasheet](https://www.cypress.com/file/376411/download)
 - [PSoC 5LP Interrupts](https://www.cypress.com/file/44256/download)
 - [PSoC 101 Video Tutorial](https://www.youtube.com/watch?v=LrXXpQr1itY&list=PLX6sqqUB8iOjsMfGEDcsPSuYLEFCh50Hr)
