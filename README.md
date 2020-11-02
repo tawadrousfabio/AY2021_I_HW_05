@@ -26,7 +26,7 @@ The UART must use the pins **12.6** and **12.7** in order to communicate through
 ### Serial Port Communication
 The acceleration values must be sent to the BCC via UART communication. The Baudrate of such communication must be sufficient to avoid hiccups in the data package delivery (JUSTIFY YOUR CHOICE IN THE TOP DESIGN DOCUMENTATION).
 This means that if the microcontroller is, for instance, reading at 200Hz from the LIS3DH accelerometer, the BCC must receive a stable 200 packages per second (±2 package/s is not considered a relevant variation).
-You will have to think about package size and
+You will have to think about package size in relation to your comms speed.
 
 ### Setup and Assignment Delivery
 - Fork this repository
@@ -37,7 +37,7 @@ You will have to think about package size and
 - Activate the project with your name and surname
 - Work on your project. Remember to save Bridge Control Panel configuration files (.ini and .iic) inside BRIDGE_CONTROL_PANEL_CONFIG_FILES folder inside your project folder
 - The last commit must be named '*SURNAME_NAME* Final Delivery'
-- Propose a pull request before the deadline for the assignment, which is on **November 14 at 6PM**
+- Propose a pull request before the deadline for the assignment, which is on **November 14 at 12AM**
 
 
 ### Evaluation
