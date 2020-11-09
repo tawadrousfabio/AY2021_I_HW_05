@@ -16,17 +16,30 @@
     */
     #define LIS3DH_CTRL_REG1 0x20
 
+    
+    /**
+    *   \brief Address of the Control register 4
+    */
+    #define LIS3DH_CTRL_REG4 0x23
+
+    #define LIS3DH_CTRL_REG4_HR 0xA8 //10101000  (BDU 0 FS1,2 HR 000)
+    
+    
     /**
     *   \brief 7-bit I2C address of the slave device.
     */
     #define LIS3DH_DEVICE_ADDRESS 0x18
     
+    /**
+    *   \brief Address of the Status register
+    */
+    #define LIS3DH_STATUS_REG 0x27
+    
+    
     
     /**
     *   \brief Struct holding the patterns data
     */
-    
-    
     typedef struct {
         uint8_t frequency;    
     } Config;

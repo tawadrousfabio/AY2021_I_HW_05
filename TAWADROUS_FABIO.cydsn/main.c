@@ -22,7 +22,9 @@ extern uint8_t REG1_set_freq_flag;
 
 extern uint8_t k;
 
-
+uint8_t error;
+char message[50] = {'\0'};
+uint8_t ctrl_reg4;
 
 int main(void)
 {
@@ -42,7 +44,52 @@ int main(void)
     k = EEPROM_Register_Check(); //Retrieve the last k from the EEPROM
     Write_reg1_freq(CFG_ARR[k], k); //Set the frequency related to the last k
     
-            
+    
+    /*      REG4 - HIGH RESOLUTION SETTING        */
+    if (ctrl_reg4 != LIS3DH_CTRL_REG4_HR)
+    {
+        ctrl_reg4 = LIS3DH_CTRL_REG4_HR; // HIGH RESOLUTION
+        
+        error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,
+                                             LIS3DH_CTRL_REG4,
+                                             ctrl_reg4);
+        
+        /*  
+        error = I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS,
+                                            LIS3DH_CTRL_REG4,
+                                            &ctrl_reg4);
+        
+        
+        if (error == NO_ERROR)
+        {
+            sprintf(message, "CONTROL REGISTER 4: 0x%02X\r\n", ctrl_reg4);
+            UART_Debug_PutString(message); 
+        }
+        else
+        {
+            UART_Debug_PutString("Error occurred during I2C comm to read control register4\r\n");   
+        }
+        */
+    }
+    
+    /*      I2C Reading Status Register       */
+    
+    uint8_t status_register; 
+    error = I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS,
+                                        LIS3DH_STATUS_REG,
+                                        &status_register);
+    
+    if (error == NO_ERROR)
+    {
+        sprintf(message, "STATUS REGISTER: 0x%02X\r\n", status_register);
+        UART_Debug_PutString(message); 
+    }
+    else
+    {
+        UART_Debug_PutString("Error occurred during I2C comm to read status register\r\n");   
+    }
+    
+    
     for(;;)
     {
         
