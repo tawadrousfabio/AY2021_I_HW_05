@@ -22,7 +22,7 @@
     */
     #define LIS3DH_CTRL_REG4 0x23
 
-    #define LIS3DH_CTRL_REG4_HR 0xA8 //10101000  (BDU 0 FS1,2 HR 000)
+    #define LIS3DH_CTRL_REG4_HR 0x88 //10001000  (BDU 0 FS1,2 HR 000)
     
     
     /**
@@ -35,8 +35,25 @@
     */
     #define LIS3DH_STATUS_REG 0x27
     
+    #define LIS3DH_STATUS_REG_ACC_COMING_VALUE 0x08
     
     
+    #define LIS3DH_OUT_X_L 0x28
+    
+    #define STARTING_INDEX_X 0
+   
+    #define STARTING_INDEX_Y 2
+    
+    #define STARTING_INDEX_Z 4
+    
+    
+    #define HEADER 0xA0
+    #define FOOTER 0xC0
+    
+    
+    
+    uint8_t Acceleration_Data_Array[6];
+    uint8_t Output_Array[8];
     /**
     *   \brief Struct holding the patterns data
     */
@@ -51,7 +68,17 @@
     */
     uint8_t EEPROM_Register_Check(void);
     
+    
     void Write_reg1_freq(Config c, uint8_t k);
+    
+
+    
+    /**
+    *   \brief used to output any axys acceleration
+    */
+    int16 Generic_Output_Axys_Acceleration(uint8_t buffer_starting_index);
+    
+    
 #endif
 
 /* [] END OF FILE */

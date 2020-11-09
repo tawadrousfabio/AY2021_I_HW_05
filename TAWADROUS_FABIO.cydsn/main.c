@@ -54,7 +54,7 @@ int main(void)
                                              LIS3DH_CTRL_REG4,
                                              ctrl_reg4);
         
-        /*  
+          
         error = I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS,
                                             LIS3DH_CTRL_REG4,
                                             &ctrl_reg4);
@@ -69,7 +69,8 @@ int main(void)
         {
             UART_Debug_PutString("Error occurred during I2C comm to read control register4\r\n");   
         }
-        */
+        
+        
     }
     
     /*      I2C Reading Status Register       */
@@ -78,7 +79,7 @@ int main(void)
     error = I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS,
                                         LIS3DH_STATUS_REG,
                                         &status_register);
-    
+    /*
     if (error == NO_ERROR)
     {
         sprintf(message, "STATUS REGISTER: 0x%02X\r\n", status_register);
@@ -88,6 +89,13 @@ int main(void)
     {
         UART_Debug_PutString("Error occurred during I2C comm to read status register\r\n");   
     }
+    */
+
+    
+
+    //int16 Acc_X, Acc_Y, Acc_Z;
+    Output_Array[0] = HEADER;
+    Output_Array[7] = FOOTER;
     
     
     for(;;)
@@ -104,7 +112,28 @@ int main(void)
         
         
 
-        
+        /*      New data arrived       */
+    
+        if(status_register &= LIS3DH_STATUS_REG_ACC_COMING_VALUE)
+        {
+            error = I2C_Peripheral_ReadRegisterMulti(LIS3DH_DEVICE_ADDRESS,
+                                                    LIS3DH_OUT_X_L, //xl
+                                                    6,
+                                                    Acceleration_Data_Array);
+            if (error == NO_ERROR)
+            {
+                //Since the return value is no needed for this specific applicatio, I don't save it in a variable
+                 Generic_Output_Axys_Acceleration(STARTING_INDEX_X);
+                 Generic_Output_Axys_Acceleration(STARTING_INDEX_Y);
+                 Generic_Output_Axys_Acceleration(STARTING_INDEX_Z);
+                
+                UART_Debug_PutArray(Output_Array, 8);
+            }
+            else{
+                UART_Debug_PutString("Error occurred during I2C comm to read acceleration output registers\r\n");   
+            }
+            
+        }
     }
 }
 
