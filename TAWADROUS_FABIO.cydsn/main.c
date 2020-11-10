@@ -28,23 +28,23 @@ int main(void)
 {
     CyGlobalIntEnable; /* Enable global interrupts. */
 
-   
-    
     UART_Debug_Start();
     EEPROM_Start();
     I2C_Peripheral_Start();
     
     BTN_ISR_StartEx(Custom_ISR_BTN);   // Start the ISR
     
-    I2C_Peripheral_IsDeviceConnected(LIS3DH_DEVICE_ADDRESS);
-        
-
-    /*      EEPROM CHECK        */
-    //k = EEPROM_Register_Check(); //Retrieve the last k from the EEPROM
+    //Device connection
+    Connection();
     
+    /*      EEPROM CHECK        */
     k = EEPROM_ReadByte(STARTUP_REGISTER_ADDRESS);
+    if (k<0 | k>5) k = 0; 
+    //This control is used because the first time I run the device, I don't know 
+    //which value is stored inside the 0x0000 address of the EEPROM. This may cause a crash of the application,
+    //or generate an error. In order to avoid this, if k is not between 0 and 5, k will be imposed as 0.
+    
     Write_reg1_freq(CFG_ARR[k], k); //Set the frequency related to the last k (no more necessary)
-    CyDelay(1000);
     
     /*      REG4 - HIGH RESOLUTION SETTING        */
     if (ctrl_reg4 != LIS3DH_CTRL_REG4_HR)
@@ -64,44 +64,30 @@ int main(void)
         if (error == NO_ERROR)
         {
             sprintf(message, "CONTROL REGISTER 4: 0x%02X\r\n", ctrl_reg4);
-            //UART_Debug_PutString(message); 
+            UART_Debug_PutString(message); 
         }
         else
         {
-            //UART_Debug_PutString("Error occurred during I2C comm to read control register4\r\n");   
+            UART_Debug_PutString("Error occurred during I2C comm to read control register4\r\n");   
         }
         
         
     }
     
-    
+    Output_Array[0] = HEADER;
+    Output_Array[7] = FOOTER;
 
-    
-
-    //int16 Acc_X, Acc_Y, Acc_Z;
-    Output_Array[0] = 0xA0;
-    Output_Array[7] = 0xC0;
-    
-    
-    
     for(;;)
     {
-        
-
         //When the button is pressed
-        if (REG1_set_freq_flag==1)
+        if (REG1_set_freq_flag)
         {
             //Write the frequency and store k
             Write_reg1_freq(CFG_ARR[k], k); 
-
             REG1_set_freq_flag = 0;
-
         }
-        
-        
 
         /*      I2C Reading Status Register       */
-    
         uint8_t status_register; 
         error = I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS,
                                             LIS3DH_STATUS_REG,
@@ -109,12 +95,16 @@ int main(void)
         
         if (error == NO_ERROR)
         {
-            sprintf(message, "STATUS REGISTER: 0x%02X\r\n", status_register);
-            //UART_Debug_PutString(message); 
+            /*  Enable only for debug purposes  
+              
+              sprintf(message, "STATUS REGISTER: 0x%02X\r\n", status_register);
+              UART_Debug_PutString(message); 
+            
+            */
         }
         else
         {
-            //UART_Debug_PutString("Error occurred during I2C comm to read status register\r\n");   
+            UART_Debug_PutString("Error occurred during I2C comm to read status register\r\n");   
         }
         
         
@@ -128,7 +118,7 @@ int main(void)
                                                     Acceleration_Data_Array);
             if (errorf == NO_ERROR)
             {
-                //Since the return value is no needed for this specific applicatio, I don't save it in a variable
+                //Since the return values is no needed for this specific applicatio, I will not save them in variables
                 Generic_Output_Axys_Acceleration(STARTING_INDEX_X);
                 Generic_Output_Axys_Acceleration(STARTING_INDEX_Y);
                 Generic_Output_Axys_Acceleration(STARTING_INDEX_Z);
@@ -136,7 +126,7 @@ int main(void)
                 UART_Debug_PutArray(Output_Array, 8);
             }
             else{
-                //UART_Debug_PutString("Error occurred during I2C comm to read acceleration output registers\r\n");   
+                UART_Debug_PutString("Error occurred during I2C comm to read acceleration output registers\r\n");   
             }
             
         }

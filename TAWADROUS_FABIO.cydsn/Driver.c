@@ -22,6 +22,46 @@ void Components_Initialization(void)
 }
 
 
+void Connection(void)
+{
+    char message[50] = {'\0'};
+    
+    CyDelay(100);
+    
+    uint32_t rval;
+ 
+	// Setup the screen and print the header
+	UART_Debug_PutString("\n\n   ");
+	for(uint8_t i = 0; i<0x10; i++)
+	{
+        sprintf(message, "%02X ", i);
+		UART_Debug_PutString(message);
+	}
+    
+    for(uint8_t i2caddress = 0; i2caddress < 0x80; i2caddress++)
+	{
+		if(i2caddress % 0x10 == 0 )
+        {
+            sprintf(message, "\n%02X ", i2caddress);
+		    UART_Debug_PutString(message);
+        }
+ 
+		rval = I2C_Master_MasterSendStart(i2caddress, I2C_Master_WRITE_XFER_MODE);
+        
+        if(rval == I2C_Master_MSTR_NO_ERROR) // If you get ACK then print the address
+		{
+            sprintf(message, "%02X ", i2caddress);
+		    UART_Debug_PutString(message);
+		}
+		else //  Otherwise print a --
+		{
+		    UART_Debug_PutString("-- ");
+		}
+        I2C_Master_MasterSendStop();
+	}
+	UART_Debug_PutString("\n\n");
+
+}
 /**
 *   \brief 
 */
@@ -45,40 +85,31 @@ void Write_reg1_freq(Config c, uint8_t k){
     ErrorCode error_reg1;
     // String to print out messages on the UART
     char message[50] = {'\0'};
-    //UART_Debug_PutString("\r\nWriting new values..\r\n");
     
     //This if statement is no more useful, since this condition will never happen.
     
     //if (ctrl_reg1 != c.frequency)
     //{
-    
-    
         ctrl_reg1 = c.frequency;
                 
         error_reg1 = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,
                                                          LIS3DH_CTRL_REG1,
-                                                         ctrl_reg1);
-                
+                                                         ctrl_reg1); 
 
         if (error_reg1 == NO_ERROR)
         {
             sprintf(message, "CONTROL REGISTER 1 successfully written as: 0x%02X\r\n", ctrl_reg1);
             //UART_Debug_PutString(message); 
             
-            //Write the k value associated with the frequency in the EEPROM
+            //Write the k value associated to the frequency in the EEPROM
             EEPROM_UpdateTemperature();
             EEPROM_WriteByte(k, STARTUP_REGISTER_ADDRESS);
-            
         }
         else
         {
-         //   UART_Debug_PutString("Error occurred during I2C comm to set control register 1\r\n");  
+            UART_Debug_PutString("Error occurred during I2C comm to set control register 1\r\n");  
         }
-        
-        
-        
     //}
-    
 }
 
 
@@ -97,9 +128,8 @@ int16 Generic_Output_Axys_Acceleration(uint8_t buffer_starting_index)
     Output_Array[buffer_starting_index +1] = (uint8_t) (acceleration & 0xFF);
     Output_Array[buffer_starting_index +2] = (uint8_t) (acceleration >>  8);
     
-    if(Output_Array[0] != HEADER) Output_Array[0] = HEADER;
-    if(Output_Array[7] != FOOTER) Output_Array[0] = FOOTER;
-    
+    //if(Output_Array[0] != HEADER) Output_Array[0] = HEADER;
+    //if(Output_Array[7] != FOOTER) Output_Array[0] = FOOTER;
     
     return acceleration; //return the acceleration value converted and scaled. Not 
 }

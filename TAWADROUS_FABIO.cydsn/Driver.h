@@ -73,6 +73,7 @@
     } Config;
     
     
+    void Connection(void);
     
     /**
     *   \brief 
