@@ -40,12 +40,23 @@
     
     #define LIS3DH_OUT_X_L 0x28
     
+    #define LIS3DH_OUT_Y_L 0x2A
+    
+    #define LIS3DH_OUT_Z_L 0x2C
+    
+    #define LIS3DH_OUT_X_H 0x29
+    
+    #define LIS3DH_OUT_Y_H 0x2B
+    
+    #define LIS3DH_OUT_Z_H 0x2D
+    
     #define STARTING_INDEX_X 0
-   
+    
     #define STARTING_INDEX_Y 2
     
     #define STARTING_INDEX_Z 4
     
+
     
     #define HEADER 0xA0
     #define FOOTER 0xC0
@@ -68,7 +79,9 @@
     */
     uint8_t EEPROM_Register_Check(void);
     
-    
+    /**
+    *   \brief 
+    */
     void Write_reg1_freq(Config c, uint8_t k);
     
 
