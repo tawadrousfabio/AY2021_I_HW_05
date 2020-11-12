@@ -1,6 +1,8 @@
 /*
 * This file includes all the required source code to interface
 * the I2C peripheral.
+*
+* \Credits: Davide Marzorati
 */
 
 /**

@@ -43,7 +43,7 @@ int main(void)
     k = EEPROM_ReadByte(STARTUP_REGISTER_ADDRESS);     //   Read the last frequency used.
     if ((k<0) | (k>5)) k = 0;                          //   Control to avoid unexpected value the very first time I program the PSoC
     
-    Write_reg1_freq(CFG_ARR[k], k);                    //   Set the frequency related to the last k
+    Write_reg1_freq(CFG_ARR[k], k);                    //   Set the frequency related to k
     
     
     /*      REG4 - HIGH RESOLUTION SETTING        */
@@ -55,7 +55,7 @@ int main(void)
                                              LIS3DH_CTRL_REG4,
                                              ctrl_reg4);
         
-        Debug(ctrl_reg4, LIS3DH_CTRL_REG4, "control register 4", DEBUG_ENABLED);
+        Debug(ctrl_reg4, LIS3DH_CTRL_REG4, "control register 4", DEBUG_DISABLED);
     }
     
     Output_Array[0] = HEADER;
@@ -78,7 +78,7 @@ int main(void)
             error = I2C_Peripheral_ReadRegisterMulti(LIS3DH_DEVICE_ADDRESS,
                                                     LIS3DH_OUT_X_L, 
                                                     6,
-                                                    Acceleration_Data_Array);
+                                                    Acc_Data_Array);
             if (error == NO_ERROR)
             {
                 Generic_Output_Axys_Acceleration(STARTING_INDEX_X);  

@@ -11,9 +11,9 @@ uint8_t REG1_set_freq_flag = 0;
 
 CY_ISR(Custom_ISR_BTN)
 {
-    
-    k++; //If the button is pressed, k is incremented.
-    REG1_set_freq_flag = 1;
+    //  Button pressed
+    k++; 
+    REG1_set_freq_flag = 1;     
     
     if(k>5) 
     {
