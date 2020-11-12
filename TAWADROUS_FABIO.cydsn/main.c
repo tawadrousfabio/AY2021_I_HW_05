@@ -110,7 +110,7 @@ int main(void)
         
         /*      New data arrived       */
     
-        if(status_register &= LIS3DH_STATUS_REG_ACC_COMING_VALUE)  //0x0F
+        if(status_register &= LIS3DH_STATUS_REG_ACC_COMING_VALUE)  //0x08 xxxxxxxx 000001000
         {
             errorf = I2C_Peripheral_ReadRegisterMulti(LIS3DH_DEVICE_ADDRESS,
                                                     LIS3DH_OUT_X_L, 
