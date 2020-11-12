@@ -92,6 +92,12 @@
     */
     int16 Generic_Output_Axys_Acceleration(uint8_t buffer_starting_index);
     
+    /**
+    *   \brief used to output any axys acceleration
+    */
+    uint8_t Debug(uint8_t data, uint8_t reg_address, char name[20], uint8_t debug_state);
+    
+    
     
 #endif
 

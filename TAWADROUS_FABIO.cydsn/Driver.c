@@ -12,15 +12,6 @@
 
 uint8_t ctrl_reg1;
 
-/**
-*   \brief 
-*/
-
-void Components_Initialization(void)
-{ 
-	UART_Debug_Start(); 
-}
-
 
 void Connection(void)
 {
@@ -128,9 +119,31 @@ int16 Generic_Output_Axys_Acceleration(uint8_t buffer_starting_index)
     Output_Array[buffer_starting_index +1] = (uint8_t) (acceleration & 0xFF);
     Output_Array[buffer_starting_index +2] = (uint8_t) (acceleration >>  8);
     
-    //if(Output_Array[0] != HEADER) Output_Array[0] = HEADER;
-    //if(Output_Array[7] != FOOTER) Output_Array[0] = FOOTER;
-    
     return acceleration; //return the acceleration value converted and scaled. Not 
+}
+
+uint8_t Debug(uint8_t data, uint8_t reg_address, char name[20], uint8_t debug_state)
+{
+    char message[50] = {'\0'};
+    ErrorCode e;
+        
+    e = I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS,
+                                        reg_address,
+                                        &data);
+    if (debug_state)
+    {
+        if (e == NO_ERROR)
+        {
+            sprintf(message, "Value of %s :  0x%02X\r\n", name, data);
+            UART_Debug_PutString(message); 
+        }
+        else
+        {
+            sprintf(message, "Error occurred during I2C comm to read %s ", name);
+            UART_Debug_PutString(message); 
+        }
+    }
+    
+    return data;
 }
 /* [] END OF FILE */
