@@ -5,7 +5,7 @@
 #include "InterruptRoutines.h"
 #include "stdio.h"
 
-uint8 k = -1; //k is an index that refers to the array of patterns
+uint8 k = -1; //k is an index that refers to the array of configs
 
 uint8_t REG1_set_freq_flag = 0;
 
@@ -15,10 +15,7 @@ CY_ISR(Custom_ISR_BTN)
     k++; 
     REG1_set_freq_flag = 1;     
     
-    if(k>5) 
-    {
-        k=0; 
-    } 
+    if(k>5) k = 0;
     
  }
 

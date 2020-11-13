@@ -57,7 +57,7 @@
     
     
     /**
-    *   \brief Used in the generic output function
+    *   \brief Starting indexes in the data array axys-specific
     */
     #define STARTING_INDEX_X 0
     
@@ -67,45 +67,38 @@
     
     
     /**
-    *   \brief Header and footer of the output array
+    *   \brief Header and tail of the output array
     */
     #define HEADER 0xA0
     #define FOOTER 0xC0
     
     /**
-    *   \brief allow to set the debug state in the Debug() function
+    *   \brief debug state in the Debug() function
     */
     #define DEBUG_ENABLED 1
     #define DEBUG_DISABLED 0
 
     /**
-    *   \brief Hex value to set normal mode to the accelerator
+    *   \brief Set normal mode to the accelerator and specific frequencies
     */
-    #define LIS3DH_NORMAL_MODE_CTRL_REG1_1H 0x17
+    #define LIS3DH_NORMAL_MODE_CTRL_REG1_1H 0x17    //  1Hz
 
-    #define LIS3DH_NORMAL_MODE_CTRL_REG1_10H 0x27
+    #define LIS3DH_NORMAL_MODE_CTRL_REG1_10H 0x27   //  10Hz
 
-    #define LIS3DH_NORMAL_MODE_CTRL_REG1_25H 0x37
+    #define LIS3DH_NORMAL_MODE_CTRL_REG1_25H 0x37   //  25Hz
 
-    #define LIS3DH_NORMAL_MODE_CTRL_REG1_50H 0x47
+    #define LIS3DH_NORMAL_MODE_CTRL_REG1_50H 0x47   //  50Hz
 
-    #define LIS3DH_NORMAL_MODE_CTRL_REG1_100H 0x57
+    #define LIS3DH_NORMAL_MODE_CTRL_REG1_100H 0x57  //  100Hz
 
-    #define LIS3DH_NORMAL_MODE_CTRL_REG1_200H 0x67
+    #define LIS3DH_NORMAL_MODE_CTRL_REG1_200H 0x67  //  200Hz
+    
     
     /**
     *   \brief acceleration data and output arrays
     */    
     uint8_t Acc_Data_Array[6];
     uint8_t Output_Array[8];
-    
-    
-    /**
-    *   \brief Struct holding the frequency data
-    */
-    typedef struct {
-        uint8_t frequency;    
-    } Config;
     
     
     /**
@@ -121,13 +114,13 @@
     
     
     /**
-    *   \brief used to give as output any axys acceleration
+    *   \brief used to give as output any axys acceleration (depending on the input)
     */
     int16 Generic_Output_Axys_Acceleration(uint8_t buffer_starting_index);
     
     
     /**
-    *   \brief used to debug the registers
+    *   \brief used to debug the registers and, if needed, to print the result
     */
     uint8_t Debug(uint8_t data, uint8_t reg_address, char name[20], uint8_t debug_state);
     
