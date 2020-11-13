@@ -56,7 +56,7 @@ void Write_reg1_freq(uint8_t k){
 *  This is a generic function valid for each axys so that I can recall it 3 times
 *  (one for the x axys, one for y and one for z), by just giving in input the starting
 *  index of the buffer array. 
-*  As we can see from the datasheet, the high resolution has 12bits, so we need a shift
+*  As we can see from the datasheet, the high resolution uses 12bits, so we need a shift
 *  of 4 bits. After this, we make the conversion in m/s^2 and store the value in the output
 *  array. 
 *
