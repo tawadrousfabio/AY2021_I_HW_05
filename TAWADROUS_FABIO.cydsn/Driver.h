@@ -19,7 +19,7 @@
     */
     #define LIS3DH_CTRL_REG1         0x20
     #define LIS3DH_CTRL_REG4         0x23
-    #define LIS3DH_STATUS_REG 0x27
+    #define LIS3DH_STATUS_REG        0x27
     
     
     /**
@@ -72,9 +72,29 @@
     #define HEADER 0xA0
     #define FOOTER 0xC0
     
+    /**
+    *   \brief allow to set the debug state in the Debug() function
+    */
+    #define DEBUG_ENABLED 1
+    #define DEBUG_DISABLED 0
+
+    /**
+    *   \brief Hex value to set normal mode to the accelerator
+    */
+    #define LIS3DH_NORMAL_MODE_CTRL_REG1_1H 0x17
+
+    #define LIS3DH_NORMAL_MODE_CTRL_REG1_10H 0x27
+
+    #define LIS3DH_NORMAL_MODE_CTRL_REG1_25H 0x37
+
+    #define LIS3DH_NORMAL_MODE_CTRL_REG1_50H 0x47
+
+    #define LIS3DH_NORMAL_MODE_CTRL_REG1_100H 0x57
+
+    #define LIS3DH_NORMAL_MODE_CTRL_REG1_200H 0x67
     
     /**
-    *   \brief 
+    *   \brief acceleration data and output arrays
     */    
     uint8_t Acc_Data_Array[6];
     uint8_t Output_Array[8];
@@ -87,6 +107,7 @@
         uint8_t frequency;    
     } Config;
     
+    
     /**
     *   \brief check the device connection (Credits Davide Marzorati)
     */
@@ -96,12 +117,14 @@
     /**
     *   \brief write the frequency on the reg1 and store it in the EEPROM
     */
-    void Write_reg1_freq(Config c, uint8_t k);
+    void Write_reg1_freq(uint8_t k);
+    
     
     /**
     *   \brief used to give as output any axys acceleration
     */
     int16 Generic_Output_Axys_Acceleration(uint8_t buffer_starting_index);
+    
     
     /**
     *   \brief used to debug the registers

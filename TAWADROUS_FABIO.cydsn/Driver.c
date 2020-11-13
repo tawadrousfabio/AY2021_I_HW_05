@@ -12,23 +12,26 @@
 
 uint8_t ctrl_reg1;
 
-
+uint8_t Configs[6] = { LIS3DH_NORMAL_MODE_CTRL_REG1_1H,
+                    LIS3DH_NORMAL_MODE_CTRL_REG1_10H,
+                    LIS3DH_NORMAL_MODE_CTRL_REG1_25H,
+                    LIS3DH_NORMAL_MODE_CTRL_REG1_50H,
+                    LIS3DH_NORMAL_MODE_CTRL_REG1_100H,
+                    LIS3DH_NORMAL_MODE_CTRL_REG1_200H};
 
 /**
 *   \brief 
 */
 
-void Write_reg1_freq(Config c, uint8_t k){
+void Write_reg1_freq(uint8_t k){
     
     ErrorCode error_reg1;
-    // String to print out messages on the UART
-    char message[50] = {'\0'};
     
     //This if statement is no more useful, since this condition will never happen.
     
-    //if (ctrl_reg1 != c.frequency)
-    //{
-        ctrl_reg1 = c.frequency;
+    if (ctrl_reg1 != Configs[k])
+    {
+        ctrl_reg1 = Configs[k];
                 
         error_reg1 = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,
                                                          LIS3DH_CTRL_REG1,
@@ -36,10 +39,6 @@ void Write_reg1_freq(Config c, uint8_t k){
 
         if (error_reg1 == NO_ERROR)
         {
-                 
-            sprintf(message, "CONTROL REGISTER 1 successfully written as: 0x%02X\r\n", ctrl_reg1);
-            //UART_Debug_PutString(message);  Only for debug purposes
-
             EEPROM_UpdateTemperature();
             EEPROM_WriteByte(k, STARTUP_REGISTER_ADDRESS);  //store k in the EEPROM
         }
@@ -47,7 +46,9 @@ void Write_reg1_freq(Config c, uint8_t k){
         {
             UART_Debug_PutString("Error occurred during I2C comm to set control register 1\r\n");  
         }
-    //}
+        
+        Debug(ctrl_reg1, LIS3DH_CTRL_REG1, "control register 1", DEBUG_ENABLED);
+    }
 }
 
 

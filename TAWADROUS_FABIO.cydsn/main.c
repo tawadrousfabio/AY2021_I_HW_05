@@ -14,7 +14,7 @@
 #include "stdio.h"
 #include "ErrorCodes.h"
 #include "I2C_Interface.h"
-#include "configs.h"
+#include "Driver.h"
 
 extern uint8_t REG1_set_freq_flag;
 
@@ -24,8 +24,6 @@ char message[50] = {'\0'};
 uint8_t ctrl_reg4;
 ErrorCode error, errorf;
 uint8_t status_register = 0x00;
-#define DEBUG_ENABLED 1
-#define DEBUG_DISABLED 0
 
 
 int main(void)
@@ -43,13 +41,14 @@ int main(void)
     k = EEPROM_ReadByte(STARTUP_REGISTER_ADDRESS);     //   Read the last frequency used.
     if ((k<0) | (k>5)) k = 0;                          //   Control to avoid unexpected value the very first time I program the PSoC
     
-    Write_reg1_freq(CFG_ARR[k], k);                    //   Set the frequency related to k
+    Write_reg1_freq(k);                                //   Set the frequency related to k
     
     
     /*      REG4 - HIGH RESOLUTION SETTING        */
+    
     if (ctrl_reg4 != LIS3DH_CTRL_REG4_HR)
     {
-        ctrl_reg4 = LIS3DH_CTRL_REG4_HR; // HIGH RESOLUTION
+        ctrl_reg4 = LIS3DH_CTRL_REG4_HR; 
         
         error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,
                                              LIS3DH_CTRL_REG4,
@@ -65,7 +64,7 @@ int main(void)
     {
         if (REG1_set_freq_flag)                 //  i.e. button pressed
         {
-            Write_reg1_freq(CFG_ARR[k], k);     //   Write the frequency and store k
+            Write_reg1_freq(k);     //   Write the frequency and store k
             REG1_set_freq_flag = 0;             //   Flag reset
         }
 
